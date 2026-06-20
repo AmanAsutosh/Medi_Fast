@@ -4,6 +4,7 @@ import Registration from './regform'
 import Login from './Login'
 import ProtectedRoute from './ProtectedRoute'
 import Dashboard from './DashBoard'
+import Diagnostic from './Diagnostic'
 
 function App() {
   // const nav=useNavigate()
@@ -15,6 +16,7 @@ function App() {
           <Route  path="/login" element={<Login/>} />
           <Route path="/register" element={<Registration/>}/>
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
+          <Route path="/diagnostic" element={<Diagnostic/>}/>
        </Routes>
     </BrowserRouter>
       

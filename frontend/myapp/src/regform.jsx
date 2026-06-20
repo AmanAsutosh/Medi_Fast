@@ -41,7 +41,7 @@ const [msg,setmsg]=useState({
             token:data.token
         })
         localStorage.setItem("token",data.token)
-        nav('/validate')
+        nav('/dashboard')
         }   
     }
 
@@ -50,7 +50,6 @@ const [msg,setmsg]=useState({
             ...fdata,
             [e.target.name]:e.target.value
         })
-
     }
     return(
         <div className="flex flex-col justify-center items-center h-screen">

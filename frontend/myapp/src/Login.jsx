@@ -1,17 +1,8 @@
 import {useState} from 'react'
 import './index.css'
-import { useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
+import { isTokenExpired } from './isTokenExpire'
 
-function tokenExpired(token){
-    try{
-    const payload=JSON.parse(aotb(token.split(".")[1]))
-    const expiry=payload.exp*1000
-    return Date.now()>expiry
-    }catch(err){
-        console.err(err)
-        return true
-    }
-}
 
 export default function Login(){
 const nav=useNavigate()
@@ -23,46 +14,42 @@ const [status,setStatus]=useState("")
         setStatus("Logging In")
 
      try{
-
        const response = await fetch("http://localhost:3000/openPage/login", {
              method: "POST",
              headers: {
                     "Content-Type": "application/json",
              },
             body: JSON.stringify({
-               fdata
+               username:fdata.n,
+               password:fdata.pass
             }),
         });
 
         const data = await response.json();
-        
-        if(data.token && tokenExpired(token)){
-        localStorage.setItem("token",data.token)
-        setStatus("Logging is successful")
-        nav('/validate')
+        setStatus(data.msg)
+        console.log(data.token)
+        if(data.token && !isTokenExpired(data.token)){
+             localStorage.setItem("token",data.token)
+             nav('/dashboard')
         }
         }   
         catch(err){
-        console.err(err)
+        console.log(err)
     }
     }
-    
-    
-
     function handleChange(e){
         setForm({
             ...fdata,
             [e.target.name]:e.target.value
         })
-
     }
     return(
         <div className="flex flex-col justify-center items-center h-screen">
-            <div>
-           <div className='flex justify-between w-full max-w-md'>
-            <span>Register</span>
-            <span>Login</span>
-           </div>
+            
+           {/* <div className='flex justify-between w-full max-w-md'> */}
+           
+            <div>Login</div>
+           {/* </div> */}
            <div  className="border border-black rounded-lg p-10 shadow-md">
             <form onSubmit={handleSubmit}>
                 Name: <input type="text" name="n" value={fdata.n} onChange={handleChange}  className="border border-black"/><br></br>
@@ -72,7 +59,7 @@ const [status,setStatus]=useState("")
                
             </form>
             </div>
-            </div>
+            
         </div>
     )
 }

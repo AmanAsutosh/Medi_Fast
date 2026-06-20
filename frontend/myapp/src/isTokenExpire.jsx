@@ -8,7 +8,7 @@ export function isTokenExpired(token){
         const timeNow=Date.now()/1000
         return decodeToken.exp<timeNow
     }catch(err){
-        console.error("Got an error",err)
+        console.error("error from isTokenExpire.jsx",err)
         return true
     }
 }
