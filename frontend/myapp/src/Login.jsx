@@ -14,7 +14,7 @@ const [status,setStatus]=useState("")
         setStatus("Logging In")
 
      try{
-       const response = await fetch("http://localhost:3000/openPage/login", {
+       const response = await fetch(import.meta.env.VITE_BACKEND_URL_LOGIN, {
              method: "POST",
              headers: {
                     "Content-Type": "application/json",
@@ -24,10 +24,10 @@ const [status,setStatus]=useState("")
                password:fdata.pass
             }),
         });
-
+        
         const data = await response.json();
         setStatus(data.msg)
-        console.log(data.token)
+
         if(data.token && !isTokenExpired(data.token)){
              localStorage.setItem("token",data.token)
              nav('/dashboard')

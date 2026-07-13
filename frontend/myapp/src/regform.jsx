@@ -2,6 +2,7 @@ import {useState} from 'react'
 import './index.css'
 import { useNavigate } from 'react-router-dom'
 
+
 export default function Registration(){
 const nav=useNavigate()
 const [fdata,setForm]=useState({
@@ -23,8 +24,8 @@ const [msg,setmsg]=useState({
               setTimeout(()=>{
             currentStatus("")
         },3000)
-
-       const response = await fetch("http://localhost:3000/openPage/register", {
+console.log("url:",import.meta.env.VITE_BACKEND_URL_REGISTER)
+       const response = await fetch(import.meta.env.VITE_BACKEND_URL_REGISTER, {
              method: "POST",
              headers: {
                     "Content-Type": "application/json",

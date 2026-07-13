@@ -2,18 +2,21 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const auth = require("../middlewares/authentication.js");
 const db = require("../db/dbcon.js");
-const userActions=require('../middlewares/handleRegistrations.js')
 
+const auth = require("../middlewares/authentication.js");
+const userActions=require('../middlewares/handleRegistrations.js');
+const generatePdf=require("../middlewares/pdf.js")
 
-require("dotenv").config();
+require("dotenv").config({path:'../.env'});
 
 const router = express.Router();
 
 
 router.post("/register", async (req, res) => {
   try {
+console.log("register hit")
+
     const { username, password } = req.body;
     const hashedpass = await bcrypt.hash(password, 10);
     const result = await userActions.registerUsers(username,hashedpass)
@@ -39,6 +42,7 @@ router.post("/register", async (req, res) => {
 
 router.post('/login',async(req,res)=>{
   try{
+    console.log("login hit")
   const {username,password}=req.body
 
   const row=await userActions.getInfo(username)
@@ -74,23 +78,19 @@ router.post('/login',async(req,res)=>{
   }
 })
 
-router.get("/dashboard", auth, (req, res) => {
-  
-})
-
 router.post("/diagnostic",async(req,res)=>{
   try{
     let {name,age,symptoms}=req.body
-      
       age=Number(age)
       
-    const result=await userActions.postPatientData(name,age,symptoms)
+    // const result=await userActions.postPatientData(name,age,symptoms)
 
-    return res.status(201).json({
-      name:result.name,
-      age:result.age,
-      symptoms:result.symptoms
-    })}
+    const reportPdf=await generatePdf(name,age,symptoms)
+
+    res.setHeader("Content-Type","application/pdf")
+
+    return res.send(Buffer.from(reportPdf))
+  }
     catch(err){
       console.log("Error from /diagnostics")
     }

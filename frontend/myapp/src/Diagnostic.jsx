@@ -13,18 +13,14 @@ export default function Diagnostic(){
     async function handleSubmit(e){
         e.preventDefault()
        
-        const response=await fetch("http://localhost:3000/openPage/diagnostic",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({
-                name:formdata.name,
-                age:formdata.age,
-                symptoms:formdata.symptoms,
-            })
-        }
-        )
-        const data=await response.json()
+        const response=await fetch(import.meta.env.VITE_BACKEND_URL_DIAGNOSTIC)
+        const blob = await response.blob();
+
+        const url = URL.createObjectURL(blob);
+
+        window.open(url, "_blank");
     }
+
     function handleChange(e){
         e.preventDefault()
         setFormData({
@@ -33,6 +29,8 @@ export default function Diagnostic(){
         })
     }
     return (
+      <div>
+        <div className=""></div>
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
   <form
     onSubmit={handleSubmit}
@@ -91,6 +89,7 @@ export default function Diagnostic(){
       
     </div>
   </form>
+  </div>
 </div>
     )
 }

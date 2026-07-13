@@ -15,8 +15,8 @@ function App() {
        <Routes>
           <Route  path="/login" element={<Login/>} />
           <Route path="/register" element={<Registration/>}/>
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
-          <Route path="/diagnostic" element={<Diagnostic/>}/>
+          <Route path="/diagnostic" element={<ProtectedRoute><Diagnostic/></ProtectedRoute>} />
+          {/* <Route path="/diagnostic" element={<Diagnostic/>}/> */}
        </Routes>
     </BrowserRouter>
       
